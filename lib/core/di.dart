@@ -11,7 +11,18 @@ import 'package:app/data/repositories/auth_repository.dart';
 
 
 final dioProvider = Provider<Dio>((ref) {
-  final dio = Dio(BaseOptions(baseUrl: String.fromEnvironment("API_BASE_URL")));
+  final dio = Dio(BaseOptions(
+      baseUrl: "http://10.0.2.2:80/api/",
+      connectTimeout: const Duration(seconds: 10),
+      receiveTimeout: const Duration(seconds: 10),
+  ));
+  dio.interceptors.add(LogInterceptor(
+    request: true,
+    requestHeader: true,
+    requestBody: true,
+    responseBody: true,
+    error: true,
+  ));
   return dio;
 });
 

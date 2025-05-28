@@ -30,10 +30,6 @@ class MyApp extends StatelessWidget {
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
-  static const apiBaseUrl = String.fromEnvironment(
-    'API_BASE_URL',
-  );
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +38,7 @@ class HomeScreen extends StatelessWidget {
       ),
       body: const Center(
         child: Text(
-          apiBaseUrl,
+          "Hello, world!",
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 18),
         ),

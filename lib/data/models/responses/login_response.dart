@@ -10,8 +10,8 @@ class LoginResponse {
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) {
     return LoginResponse(
-      token: json["attributes"]["token"],
-      user:  UserModel.fromJson(json)
+      token: json["token"] as String,
+      user:  UserModel.fromJson(json["data"] as Map<String, dynamic> )
     );
   }
 }
