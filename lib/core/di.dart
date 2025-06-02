@@ -1,6 +1,8 @@
 import 'package:app/domain/entities/user.dart';
 import 'package:app/domain/usecases/login_use_case.dart';
-import 'package:app/presentation/features/auth/login_viewmodel.dart';
+import 'package:app/domain/usecases/register_use_case.dart';
+import 'package:app/presentation/features/auth/login/login_viewmodel.dart';
+import 'package:app/presentation/features/auth/register/register_view_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -47,3 +49,13 @@ final loginViewModelProvider =
 StateNotifierProvider<LoginViewModel, AsyncValue<User?>>((ref) {
   return LoginViewModel(ref.watch(loginUseCaseProvider));
 });
+
+final registerUseCaseProvider = Provider<RegisterUseCase>((ref) {
+  return RegisterUseCase(ref.watch(authRepositoryProvider));
+});
+
+final registerViewModelProvider =
+StateNotifierProvider<RegisterViewModel, AsyncValue<User?>>((ref) {
+  return RegisterViewModel(ref.watch(registerUseCaseProvider));
+});
+

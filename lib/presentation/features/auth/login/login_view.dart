@@ -26,7 +26,14 @@ class _LoginViewState extends ConsumerState<LoginView> {
   }
 
   void _onSignUp() {
-    // TODO: Redirect to register page.
+    GoRouter.of(context).go("/register");
+  }
+
+  @override
+  void dispose() {
+    _emailControl.dispose();
+    _passControl.dispose();
+    super.dispose();
   }
 
   @override
@@ -39,13 +46,19 @@ class _LoginViewState extends ConsumerState<LoginView> {
           data: (user) {
             if(user != null) {
               WidgetsBinding.instance.addPostFrameCallback((_) {
-                context.go('/home');
+                if(!mounted) return;
+                GoRouter.of(context).go('/home');
               });
             }
           },
-          error: (e,_) => ScaffoldMessenger
-              .of(context)
-              .showSnackBar(SnackBar(content: Text("Error: $e"))),
+        error: (e, _) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (!mounted) return;
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text("Error: $e")),
+            );
+          });
+        },
           loading: () {  },
       );
     });
@@ -192,7 +205,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                           Expanded(child: Divider()),
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Text('OR'),
+                            child: Text('SAU'),
                           ),
                           Expanded(child: Divider()),
                         ],

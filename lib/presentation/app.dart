@@ -1,4 +1,6 @@
-import 'package:app/presentation/features/auth/login_view.dart';
+import 'package:app/presentation/features/auth/login/login_view.dart';
+import 'package:app/presentation/features/auth/register/register_view.dart';
+import 'package:app/presentation/features/home/home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -6,13 +8,12 @@ final _router = GoRouter(
   initialLocation: '/login',
   routes: [
     GoRoute(path: '/login', builder: (_, __) => const LoginView()),
-    GoRoute(path: '/home',  builder: (_, __) => const MyApp()),
+    GoRoute(path: '/home',  builder: (_, __) => const HomeView()),
+    GoRoute(path: '/register', builder: (_,__) => const RegisterView())
   ],
 );
 
 
-/// MyApp is the root widget of the iMpreuna application.
-/// This placeholder demonstrates basic setup with MaterialApp.
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -23,26 +24,6 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       routerConfig: _router,
       theme: ThemeData(primarySwatch: Colors.blue),
-    );
-  }
-}
-
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('iMpreuna Home'),
-      ),
-      body: const Center(
-        child: Text(
-          "Hello, world!",
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 18),
-        ),
-      ),
     );
   }
 }
