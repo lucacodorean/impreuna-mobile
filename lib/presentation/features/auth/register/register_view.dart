@@ -27,10 +27,13 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
 
   void _onRegisterPressed() {
     ref.read(registerViewModelProvider.notifier)
-        .register(
-        _nameControl.text, _emailControl.text,
-        _passControl.text, _confirmedControl.text
+      .register(
+      _nameControl.text, _emailControl.text,
+      _passControl.text, _confirmedControl.text
     );
+
+    ref.read(loginViewModelProvider.notifier)
+      .login(_emailControl.text, _passControl.text);
   }
 
   void _onLogin() {
@@ -40,17 +43,26 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
   @override
   Widget build(BuildContext context) {
 
-    final loginState = ref.watch(registerViewModelProvider);
+    final registerState = ref.watch(registerViewModelProvider);
 
     ref.listen<AsyncValue<User?>>(registerViewModelProvider, (_,value) {
       value.when(
         data: (user) {
           if(user != null) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              if(!mounted) return;
-              GoRouter.of(context).go('/home');
+
+              ref.read(loginStateProvider.notifier).logIn();
+              GoRouter.of(context).go('/');
             });
           }
+
+          return Column(
+            children: [
+              const Text(
+                'Înregistrare eșuată. Verifică datele.',
+                style: TextStyle(color: Colors.red),
+              ) ,
+          ]);
         },
         error: (e, _) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -167,7 +179,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                         //Login button
                         SizedBox(
                             width: double.infinity,
-                            child: loginState.when<Widget>(
+                            child: registerState.when<Widget>(
                               data: (_) => ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                   foregroundColor: Colors.white,
@@ -177,7 +189,8 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                                   ),
                                 ),
                                 onPressed: _onRegisterPressed,
-                                child: const Text("Register",
+                                child: Text(
+                                    registerState is AsyncLoading<User?> ? "Se procesează..." : "Register",
                                     style: TextStyle(
                                         fontSize: 16,
                                         fontFamily: 'Inter',

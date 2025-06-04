@@ -1,8 +1,6 @@
-import 'package:app/core/di.dart';
 import 'package:app/data/models/responses/login_response.dart';
 import 'package:app/data/models/responses/register_response.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AuthRemoteDataSource {
   final Dio dio;
@@ -48,8 +46,3 @@ class AuthRemoteDataSource {
     return RegisterResponse.fromJson(resp.data as Map<String, dynamic>);
   }
 }
-
-final authRemoteDataSourceProvider = Provider<AuthRemoteDataSource>((ref) {
-  final dio = ref.watch(dioProvider);
-  return AuthRemoteDataSource(dio: dio);
-});

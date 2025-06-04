@@ -47,7 +47,9 @@ class _LoginViewState extends ConsumerState<LoginView> {
             if(user != null) {
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 if(!mounted) return;
-                GoRouter.of(context).go('/home');
+
+                ref.read(loginStateProvider.notifier).logIn();
+                GoRouter.of(context).go('/');
               });
             }
           },
