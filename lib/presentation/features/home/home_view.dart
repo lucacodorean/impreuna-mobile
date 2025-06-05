@@ -3,13 +3,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class HomeView extends ConsumerWidget  {
+class HomeView extends ConsumerStatefulWidget {
   const HomeView({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends ConsumerState<HomeView> {
+  int selectedIndex = 1;
+
+  @override
+  Widget build(BuildContext context) {
 
     final loginState = ref.watch(loginViewModelProvider);
+
+
+    const List<Widget> pages = <Widget>[
+      Center(child: Text('Requests Screen')),
+      Center(child: Text('Events Screen')),
+      Center(child: Text('Profile Screen')),
+    ];
+
+    void onItemTapped(int index) {
+      setState(() {
+        selectedIndex = index;
+      });
+    }
 
     return loginState.when(
       data: (user) {
@@ -22,14 +42,21 @@ class HomeView extends ConsumerWidget  {
 
         return Scaffold(
           appBar: AppBar(
-            title: const Text('iMpreuna Home'),
+            title: const Text('iMpreună'),
           ),
-          body:Center(
-              child: Text(
-                "Hello, ${user.name}!",
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 18),
-              )
+          body: IndexedStack(
+            index: selectedIndex,
+            children: pages,
+          ),
+          bottomNavigationBar: NavigationBar(
+              selectedIndex: selectedIndex,
+              onDestinationSelected: onItemTapped,
+              destinations: const<NavigationDestination> [
+                NavigationDestination(icon: Icon(Icons.request_quote), label: "Cereri"),
+                NavigationDestination(icon: Icon(Icons.event), label: "Evenimente"),
+                NavigationDestination(icon: Icon(Icons.verified_user), label: "Profil")
+              ],
+
           ),
         );
       },
