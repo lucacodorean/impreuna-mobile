@@ -1,9 +1,15 @@
 import 'package:app/core/util/login_state.dart';
+import 'package:app/data/datasources/request_data_source.dart';
+import 'package:app/data/repositories/implementations/request_repository_impl.dart';
+import 'package:app/data/repositories/request_repository.dart';
+import 'package:app/domain/entities/request.dart';
 import 'package:app/domain/entities/user.dart';
 import 'package:app/domain/usecases/login_use_case.dart';
 import 'package:app/domain/usecases/register_use_case.dart';
+import 'package:app/domain/usecases/request_all_use_case.dart';
 import 'package:app/presentation/features/auth/login/login_viewmodel.dart';
 import 'package:app/presentation/features/auth/register/register_view_model.dart';
+import 'package:app/presentation/features/requests/request_viewmodel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:dio/dio.dart';
@@ -64,3 +70,19 @@ StateNotifierProvider<RegisterViewModel, AsyncValue<User?>>((ref) {
 final loginStateProvider = StateNotifierProvider<LoginNotifier, LoginState>((ref) {
   return LoginNotifier();
 });
+
+final requestRemoteDataSourceProvider = Provider<RequestDataSource>((ref) {
+  final dio = ref.read(dioProvider);
+  return RequestDataSource(dio: dio);
+});
+
+final requestRepositoryProvider = Provider<RequestRepository>((ref) {
+  final remote = ref.read(requestRemoteDataSourceProvider);
+  return RequestRepositoryImpl(remote: remote);
+});
+
+final requestAllUseCaseProvider = Provider((ref) => RequestAllUseCase(ref.read(requestRepositoryProvider)));
+
+final requestViewModelProvider = StateNotifierProvider<RequestViewModel, AsyncValue<List<Request>?>>(
+      (ref) => RequestViewModel(ref.read(requestAllUseCaseProvider)),
+);

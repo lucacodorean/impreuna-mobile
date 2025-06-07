@@ -1,4 +1,5 @@
 import 'package:app/core/di.dart';
+import 'package:app/presentation/features/requests/requests_index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -20,7 +21,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
 
 
     const List<Widget> pages = <Widget>[
-      Center(child: Text('Requests Screen')),
+      RequestsPage(),
       Center(child: Text('Events Screen')),
       Center(child: Text('Profile Screen')),
     ];
