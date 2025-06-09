@@ -52,7 +52,6 @@ class MyApp extends ConsumerWidget {
     );
 
     return MaterialApp.router(
-      title: 'iMpreuna',
       debugShowCheckedModeBanner: false,
       routerConfig: goRouter,
       theme: ThemeData(primarySwatch: Colors.blue),

@@ -10,7 +10,6 @@ import 'package:app/domain/usecases/request_all_use_case.dart';
 import 'package:app/presentation/features/auth/login/login_viewmodel.dart';
 import 'package:app/presentation/features/auth/register/register_view_model.dart';
 import 'package:app/presentation/features/requests/request_viewmodel.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -83,6 +82,11 @@ final requestRepositoryProvider = Provider<RequestRepository>((ref) {
 
 final requestAllUseCaseProvider = Provider((ref) => RequestAllUseCase(ref.read(requestRepositoryProvider)));
 
-final requestViewModelProvider = StateNotifierProvider<RequestViewModel, AsyncValue<List<Request>?>>(
-      (ref) => RequestViewModel(ref.read(requestAllUseCaseProvider)),
-);
+// 4) ViewModel-ul de Requests
+final requestViewModelProvider = StateNotifierProvider<
+    RequestViewModel,
+    AsyncValue<List<Request>>
+>((ref) {
+  final useCase = ref.read(requestAllUseCaseProvider);
+  return RequestViewModel(useCase);
+});

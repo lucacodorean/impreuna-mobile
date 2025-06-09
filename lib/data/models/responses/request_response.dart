@@ -6,7 +6,7 @@ class RequestResponse {
 
   factory RequestResponse.fromJson(Map<String, dynamic> json) {
     return RequestResponse(
-        request:  RequestModel.fromJson(json["data"] as Map<String, dynamic> )
+        request:  RequestModel.fromJson(json)
     );
   }
 }

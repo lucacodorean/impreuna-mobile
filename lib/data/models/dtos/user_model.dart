@@ -30,7 +30,7 @@ class UserModel {
       avatar: json["attributes"]["profile_photo_url"],
       createdAt: DateTime.parse(json["attributes"]["created_at"]),
       updatedAt: DateTime.parse(json["attributes"]["updated_at"]),
-      // self: json['links']['self'],
+      // self: json['links']['this'],
       // parent: json['links']['parent'],
     );
   }

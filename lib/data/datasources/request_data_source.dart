@@ -7,7 +7,7 @@ class RequestDataSource {
 
   Future<List<RequestResponse>> all() async {
       final resp = await dio.get(
-        "/requests?include=user",
+        "/requests?include=user,volunteers,tags",
         data: {},
         options: Options(headers: {
           'Connection': 'close',
